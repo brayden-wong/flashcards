@@ -1,6 +1,5 @@
 import { z } from "zod";
-import type { Request } from "../_utils";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { db, schema } from "~/server/db";
 import { auth } from "@clerk/nextjs/server";
 
@@ -23,10 +22,17 @@ const SetFormSchema = z.object({
 
 export type SetFormSchema = z.infer<typeof SetFormSchema>;
 
-export async function POST(req: Request<SetFormSchema>) {
-  const data = await req.json();
-
+export async function POST(req: NextRequest) {
   await auth.protect();
+
+  const json: z.infer<typeof SetFormSchema> = await req.json();
+
+  const data = SetFormSchema.safeParse(json);
+
+  if (!data.success)
+    return NextResponse.json({ success: false, error: data.error } as const, {
+      status: 400,
+    });
 
   const result = SetFormSchema.safeParse(data);
 
@@ -35,14 +41,20 @@ export async function POST(req: Request<SetFormSchema>) {
       status: 400,
     });
 
-  const { userId } = await auth();
+  const user = await auth();
+
+  if (!user.userId)
+    return NextResponse.json(
+      { success: false, error: "User not found" },
+      { status: 400 },
+    );
 
   const [set] = await db
     .insert(schema.set)
     .values({
-      userId,
-      name: data.name,
-      description: data.description,
+      userId: user.userId,
+      name: result.data.name,
+      description: result.data.description,
     })
     .returning({ id: schema.set.id });
 
