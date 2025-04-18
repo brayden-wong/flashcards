@@ -27,25 +27,21 @@ export async function POST(req: NextRequest) {
 
   const json: z.infer<typeof SetFormSchema> = await req.json();
 
-  const data = SetFormSchema.safeParse(json);
-
-  if (!data.success)
-    return NextResponse.json({ success: false, error: data.error } as const, {
-      status: 400,
-    });
-
-  const result = SetFormSchema.safeParse(data);
+  const result = SetFormSchema.safeParse(json);
 
   if (!result.success)
-    return NextResponse.json({ success: false, error: result.error } as const, {
-      status: 400,
-    });
+    return NextResponse.json(
+      { success: false, error: result.error.toString() } as const,
+      {
+        status: 400,
+      },
+    );
 
   const user = await auth();
 
   if (!user.userId)
     return NextResponse.json(
-      { success: false, error: "User not found" },
+      { success: false, error: "User not found" } as const,
       { status: 400 },
     );
 
@@ -76,9 +72,7 @@ export async function POST(req: NextRequest) {
 
   const res = NextResponse.json(
     { success: true, data: "Set created" } as const,
-    {
-      status: 201,
-    },
+    { status: 201 },
   );
 
   res.cookies.set("update", "", { expires: Date.now() });
