@@ -116,7 +116,6 @@ const UtilityBar = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Toggle
-              variant="primary"
               className="size-8"
               pressed={definition}
               onPressedChange={setDefinition}
@@ -135,7 +134,6 @@ const UtilityBar = () => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Toggle
-              variant="primary"
               className="size-8"
               pressed={isShuffled}
               aria-label="Toggle shuffle"
@@ -158,7 +156,7 @@ const UtilityBar = () => {
               variant="ghost"
               onClick={close}
               aria-label="Close"
-              className="size-8 hover:bg-blue-400/80"
+              className="size-8"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -171,24 +169,27 @@ const UtilityBar = () => {
 };
 
 const CardContent = ({
+  type,
   text,
   imageUrl,
 }: {
+  type: "Term" | "Definition";
   text: string | null;
   imageUrl: string | null;
 }) => {
   return (
-    <div>
+    <div className="relative flex h-full w-full flex-col items-center justify-center gap-4">
+      <header className="absolute left-4 top-4">{type}</header>
       {text && <div className="text-xl">{text}</div>}
       {imageUrl && (
-        <div className="relative max-h-[200px] w-full max-w-[300px]">
+        <div className="relative h-64 w-full max-w-xs">
           <Image
             src={imageUrl}
             alt={text ?? "Card content"}
-            width={300}
-            height={200}
-            className="max-h-[200px] w-auto rounded-md object-contain"
+            fill
+            className="rounded-md object-cover"
             priority
+            sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
       )}
@@ -236,7 +237,7 @@ const FlashCard = ({
     <div className="relative h-full w-full">
       <MotionConfig transition={{ duration: 0.7, bounce: 0 }}>
         <motion.div
-          className="h-full w-full rounded-lg border shadow-lg"
+          className="relative h-full w-full rounded-lg border shadow-lg"
           animate={{ rotateY: flip ? 0 : 180 }}
         >
           <motion.div
@@ -246,16 +247,16 @@ const FlashCard = ({
             <motion.div
               transition={{ duration: 0.7 }}
               animate={{ rotateY: flip ? 0 : 180 }}
-              className="absolute flex w-full items-center justify-center [backface-visibility:hidden]"
+              className="absolute flex h-full w-full items-center justify-center [backface-visibility:hidden]"
             >
-              <CardContent {...frontContent} />
+              <CardContent type="Term" {...frontContent} />
             </motion.div>
             <motion.div
               initial={{ rotateY: 180 }}
               animate={{ rotateY: flip ? 180 : 0 }}
-              className="absolute flex w-full items-center justify-center [backface-visibility:hidden]"
+              className="absolute flex h-full w-full items-center justify-center [backface-visibility:hidden]"
             >
-              <CardContent {...backContent} />
+              <CardContent type="Definition" {...backContent} />
             </motion.div>
           </motion.div>
         </motion.div>
@@ -339,8 +340,8 @@ export function FlashcardViewer({ set }: { set: Set }) {
 
       <div className="flex items-center justify-between">
         <Button
-          variant="outline"
           size="icon"
+          variant="ghost"
           onClick={goToPrevCard}
           aria-label="Previous card"
         >
@@ -354,8 +355,8 @@ export function FlashcardViewer({ set }: { set: Set }) {
         </div>
 
         <Button
-          variant="outline"
           size="icon"
+          variant="ghost"
           onClick={goToNextCard}
           aria-label="Next card"
         >

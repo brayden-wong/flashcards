@@ -1,11 +1,9 @@
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import "server-only";
 import { db } from "~/server/db";
 
 export async function getSets() {
-  const user = await currentUser();
-
-  if (!user) return null;
+  const user = await auth.protect();
 
   const data = await db.transaction(async (tx) => {
     const sets = await tx.query.set.findMany({
@@ -14,11 +12,11 @@ export async function getSets() {
         name: true,
       },
       where: (set, { eq, and, sql }) =>
-        and(eq(set.userId, user.id), sql`${set.folderId} is null`),
+        and(eq(set.userId, user.userId), sql`${set.folderId} is null`),
     });
 
     const folders = await tx.query.folder.findMany({
-      where: (folder, { eq }) => eq(folder.userId, user.id),
+      where: (folder, { eq }) => eq(folder.userId, user.userId),
       columns: {
         id: true,
         name: true,

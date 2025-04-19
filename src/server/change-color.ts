@@ -1,6 +1,6 @@
 "use server";
 
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import type { Color } from "~/lib/types/color";
 import { db, schema } from "./db";
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export async function changeColor({ id, color }: Props) {
-  const user = await currentUser();
+  const user = await auth.protect();
 
   if (!user) redirect("/");
 

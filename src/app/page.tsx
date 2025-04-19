@@ -14,8 +14,6 @@ const Page = async () => {
 
   if (!data) redirect("/");
 
-  console.log(data);
-
   const { sets, folders } = data;
 
   return (
@@ -40,7 +38,7 @@ const DisplayFolders = ({ folders }: DisplayFoldersProps) => {
   return (
     <div>
       <h1 className="text-lg font-medium">Folders</h1>
-      <section className="mt-2 grid grid-cols-6 gap-4">
+      <section className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {folders.map((folder) => (
           <FolderCard key={folder.id} folder={folder} />
         ))}
@@ -59,7 +57,7 @@ const DisplaySets = ({ sets }: DisplaySetsProps) => {
   return (
     <div>
       <h1 className="text-lg font-medium">Sets</h1>
-      <section className="mt-2 grid grid-cols-6 gap-4">
+      <section className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
         {sets.map((set) => (
           <SetCard key={set.id} set={set} />
         ))}

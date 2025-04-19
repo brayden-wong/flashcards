@@ -12,7 +12,8 @@ import {
   SignInButton,
   SignOutButton,
 } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Flashcards",
@@ -35,6 +36,7 @@ const RootLayout = async ({ children, modal }: Props) => (
           </header>
         </SignedOut>
         <RenderChildren>
+          <Toaster duration={5000} position="bottom-right" />
           {children}
           {modal}
         </RenderChildren>
@@ -44,9 +46,7 @@ const RootLayout = async ({ children, modal }: Props) => (
 );
 
 const RenderChildren = async ({ children }: PropsWithChildren) => {
-  const user = await currentUser();
-
-  if (!user) return null;
+  await auth.protect();
 
   return <SignedIn>{children}</SignedIn>;
 };
