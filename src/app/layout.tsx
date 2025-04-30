@@ -22,10 +22,9 @@ export const metadata: Metadata = {
 
 type Props = Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
 }>;
 
-const RootLayout = async ({ children, modal }: Props) => (
+const RootLayout = async ({ children }: Props) => (
   <ClerkProvider>
     <html lang="en">
       <body className={GeistSans.className}>
@@ -38,7 +37,6 @@ const RootLayout = async ({ children, modal }: Props) => (
         <RenderChildren>
           <Toaster duration={5000} position="bottom-right" />
           {children}
-          {modal}
         </RenderChildren>
       </body>
     </html>

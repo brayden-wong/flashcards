@@ -180,7 +180,11 @@ const CardContent = ({
   return (
     <div className="relative flex h-full w-full flex-col items-center justify-center gap-4">
       <header className="absolute left-4 top-4">{type}</header>
-      {text && <div className="text-xl">{text}</div>}
+      {text && (
+        <div className="max-w-[calc(100%-2rem)] text-xl">
+          <p className="text-wrap">{text}</p>
+        </div>
+      )}
       {imageUrl && (
         <div className="relative h-64 w-full max-w-xs">
           <Image
