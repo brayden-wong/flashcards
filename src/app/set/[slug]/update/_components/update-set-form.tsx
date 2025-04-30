@@ -159,7 +159,7 @@ export const UpdateSetForm = ({ set }: Props) => {
               <FormControl>
                 <Textarea
                   {...field}
-                  className="max-h-96"
+                  className="h-32"
                   placeholder="Enter set description (optional)"
                 />
               </FormControl>
@@ -186,10 +186,11 @@ export const UpdateSetForm = ({ set }: Props) => {
               control={form.control}
             />
           ))}
-          <AddCard className="w-full" append={() => append(DEFAULT_VALUES)} />
         </div>
-
-        <SubmitButton isPending={isPending}>Update Set</SubmitButton>
+        <div className="sticky bottom-0 mt-4 flex flex-col gap-2 border-t bg-white py-4">
+          <AddCard className="w-full" append={() => append(DEFAULT_VALUES)} />
+          <SubmitButton isPending={isPending}>Create Set</SubmitButton>
+        </div>
       </form>
     </Form>
   );
@@ -327,7 +328,11 @@ const CardForm = ({
             <FormItem>
               <FormLabel>Definition</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter definition" {...field} />
+                <Textarea
+                  className="h-96"
+                  placeholder="Enter definition"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

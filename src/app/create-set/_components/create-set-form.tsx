@@ -131,7 +131,7 @@ export const CreateSetForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex w-full flex-col gap-4"
+        className="relative flex w-full flex-col gap-4"
       >
         <FormField
           name="name"
@@ -146,31 +146,28 @@ export const CreateSetForm = () => {
             </FormItem>
           )}
         />
-
         <FormField
           name="description"
           control={form.control}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="Enter set description (optional)"
                   {...field}
-                  className="max-h-96"
+                  className=""
+                  placeholder="Enter set description (optional)"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <FormLabel>Cards</FormLabel>
             <AddCard append={() => append(DEFAULT_VALUES)} />
           </div>
-
           {fields.map((field, index) => (
             <CardForm
               key={field.id}
@@ -183,10 +180,11 @@ export const CreateSetForm = () => {
               control={form.control}
             />
           ))}
-          <AddCard className="w-full" append={() => append(DEFAULT_VALUES)} />
         </div>
-
-        <SubmitButton isPending={isPending}>Create Set</SubmitButton>
+        <div className="sticky bottom-0 mt-4 flex flex-col gap-2 border-t bg-white py-4">
+          <AddCard className="w-full" append={() => append(DEFAULT_VALUES)} />
+          <SubmitButton isPending={isPending}>Create Set</SubmitButton>
+        </div>
       </form>
     </Form>
   );
@@ -298,6 +296,7 @@ const CardForm = ({
                   <UploadDropzone
                     config={{ mode: "auto" }}
                     endpoint="imageUploader"
+                    className="h-64"
                     onClientUploadComplete={([data]) => {
                       if (!data) return console.log("No data");
 
@@ -312,21 +311,23 @@ const CardForm = ({
             </FormItem>
           )}
         />
-
         <FormField
           control={control}
           name={`cards.${index}.definition`}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="">
               <FormLabel>Definition</FormLabel>
               <FormControl>
-                <Textarea placeholder="Enter definition" {...field} />
+                <Textarea
+                  className="h-96"
+                  placeholder="Enter definition"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
           control={control}
           name={`cards.${index}.definitionUrl`}

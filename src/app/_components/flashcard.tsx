@@ -181,7 +181,7 @@ const CardContent = ({
     <div className="relative flex h-full w-full flex-col items-center justify-center gap-4">
       <header className="absolute left-4 top-4">{type}</header>
       {text && (
-        <div className="max-w-[calc(100%-2rem)] text-xl">
+        <div className="max-w-[calc(100%-2rem)] text-base/6 md:text-xl">
           <p className="text-wrap">{text}</p>
         </div>
       )}
@@ -335,8 +335,8 @@ export function FlashcardViewer({ set }: { set: Set }) {
   }, [cards.length]);
 
   const CardViewerContent = () => (
-    <div className="flex flex-col gap-6 py-4">
-      <div className="relative h-[350px] w-full overflow-hidden md:h-[400px]">
+    <div className="flex flex-1 flex-col gap-6 py-4">
+      <div className="relative h-full w-full overflow-hidden">
         {currentCard && (
           <FlashCard card={currentCard} showDefinitionFirst={definition} />
         )}
@@ -373,8 +373,8 @@ export function FlashcardViewer({ set }: { set: Set }) {
   if (isMobile) {
     return (
       <Drawer open={true} onOpenChange={handleClose}>
-        <DrawerContent className="max-h-[90vh]">
-          <DrawerHeader className="flex items-center justify-between">
+        <DrawerContent className="h-[90vh]">
+          <DrawerHeader className="flex shrink-0 items-center justify-between">
             <div>
               <DrawerTitle>{set.name}</DrawerTitle>
               {set.description && (
@@ -383,7 +383,7 @@ export function FlashcardViewer({ set }: { set: Set }) {
             </div>
             <UtilityBar />
           </DrawerHeader>
-          <div className="px-2">
+          <div className="flex flex-1 flex-col px-2">
             <CardViewerContent />
           </div>
         </DrawerContent>
@@ -393,8 +393,8 @@ export function FlashcardViewer({ set }: { set: Set }) {
 
   return (
     <AlertDialog open={true} onOpenChange={handleClose}>
-      <AlertDialogContent className="max-h-[90vh] max-w-3xl overflow-hidden">
-        <AlertDialogHeader className="flex flex-row items-center justify-between">
+      <AlertDialogContent className="flex h-[90vh] max-w-3xl flex-col overflow-hidden">
+        <AlertDialogHeader className="flex shrink-0 flex-row items-center justify-between">
           <div>
             <AlertDialogTitle>{set.name}</AlertDialogTitle>
             {set.description && (
@@ -403,7 +403,9 @@ export function FlashcardViewer({ set }: { set: Set }) {
           </div>
           <UtilityBar />
         </AlertDialogHeader>
-        <CardViewerContent />
+        <div className="flex flex-1">
+          <CardViewerContent />
+        </div>
       </AlertDialogContent>
     </AlertDialog>
   );

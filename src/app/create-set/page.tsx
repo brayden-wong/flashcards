@@ -13,8 +13,8 @@ const CreateSetPage = async () => {
       <div className="flex w-full max-w-3xl flex-col gap-4">
         <div className="flex shrink-0 items-start justify-start">
           <Link href="/">
-            <Button className="group">
-              <MoveLeft className="size-4 duration-200 group-hover:-translate-x-1" />{" "}
+            <Button className="group gap-2">
+              <MoveLeft className="size-4 duration-200 group-hover:-translate-x-1" />
               Back
             </Button>
           </Link>
